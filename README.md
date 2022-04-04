@@ -22,6 +22,6 @@ curl http://localhost:8888/transaction/:txHash
 ```docker
 
 docker-compose down
-docker rmi blockindex_api-service
+docker rmi blockindex_api-service blockindex_api-service
 
 ```
