@@ -9,12 +9,12 @@ docker-compose up -d
 ```
 
 ```curl
-curl http://localhost:8888/blocks\?limit=20
-curl http://localhost:8888/blocks\?limit=20&&chain_id=97
+curl http://localhost:8888/v1/blocks?limit=20
+curl http://localhost:8888/v1/blocks?limit=20&&chain_id=97
 
-curl http://localhost:8888/blocks/:num
+curl http://localhost:8888/v1/blocks/:num
 
-curl http://localhost:8888/transaction/:txHash
+curl http://localhost:8888/v1/transaction/:txHash
 ```
 
 ### Stop service
