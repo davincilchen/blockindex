@@ -1,0 +1,72 @@
+version: "3.5"
+
+services:
+  api-service:
+      build:
+        context: ./api
+      working_dir: /apps
+      ports:
+      - "${API_PORT:-8888}:8888"
+      environment:
+      - REDIS_ADDR=${REDIS_ADDR:-redisaddr}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - DB_ADDR=${DB_ADDR:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_USER=${DB_USER:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}   
+      volumes:
+        - ./api:/apps
+      depends_on:
+        - redis
+      networks:
+        serv:
+          aliases:
+            - api        
+      entrypoint: go run main.go
+      restart: always
+  indexer-service:
+      build:
+        context: ./indexer
+      working_dir: /apps
+      environment:
+      - DB_ADDR=${DB_ADDR:-db}
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_USER=${DB_USER:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}   
+      volumes:
+        - ./indexer:/apps
+      depends_on:
+        - db
+      networks:
+        serv:
+          aliases:
+            - indexer        
+      entrypoint: go run main.go
+      restart: always
+  db:
+    image: postgres:12.4-alpine
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER:-user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-password}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    networks:
+      serv:
+        aliases:
+          - db      
+    restart: always
+  redis:                            
+    image: redis:5.0.5-alpine 
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    networks:
+      serv:
+        aliases:
+          - redisaddr       
+    restart: always
+
+networks:
+  serv:
+    name: serv
+    driver: bridge    
