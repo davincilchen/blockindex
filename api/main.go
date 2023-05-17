@@ -38,6 +38,7 @@ func getRedisConfig() *models.RedisConfig {
 }
 
 func connectPostgres(cfg *DBConfig) (*gorm.DB, error) {
+	fmt.Println("DB addr:", cfg.Addr)
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Taipei",
 		cfg.Addr, cfg.Port, cfg.User, cfg.Password, cfg.Database)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

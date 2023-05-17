@@ -5,7 +5,6 @@ COPY go.sum ./
 COPY ./main.go /apps/
 COPY ./controllers/ /apps/controllers/
 COPY ./models/ /apps/models/
-COPY ./redisclient/ /apps/redisclient/
 COPY ./routes/ /apps/routes/
 
 RUN go mod download
