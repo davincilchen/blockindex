@@ -10,12 +10,8 @@ services:
       environment:
       - REDIS_ADDR=${REDIS_ADDR:-redisaddr}
       - REDIS_PORT=${REDIS_PORT:-6379}
-      - DB_ADDR=${DB_ADDR:-rmdb}
-      #- DB_ADDR=${DB_ADDR:-db}
-      #- DB_ADDR=可以用alias或hostname連接
-      #- DB_PORT=${DB_PORT:-5432}
-      #在預設網路下固定連5432(容器內的port),用docker對外的port會連失敗
-      - DB_PORT=5432
+      - DB_ADDR=${DB_ADDR:-db}
+      - DB_PORT=${DB_PORT:-5432}
       - DB_USER=${DB_USER:-user}
       - DB_PASSWORD=${DB_PASSWORD:-password}   
       volumes:
@@ -33,12 +29,8 @@ services:
         context: ./indexer
       working_dir: /apps
       environment:
-      - DB_ADDR=${DB_ADDR:-rmdb}
-      #- DB_ADDR=${DB_ADDR:-db}
-      #- DB_ADDR=可以用alias或hostname連接
-      #- DB_PORT=${DB_PORT:-5432}
-      #在預設網路下固定連5432(容器內的port),用docker對外的port會連失敗
-      - DB_PORT=5432
+      - DB_ADDR=${DB_ADDR:-db}
+      - DB_PORT=${DB_PORT:-5432}
       - DB_USER=${DB_USER:-user}
       - DB_PASSWORD=${DB_PASSWORD:-password}   
       volumes:
@@ -53,9 +45,7 @@ services:
       restart: always
   db:
     image: postgres:12.4-alpine
-    hostname: rmdb
     ports:
-      #- "${DB_PORT:-DB_PORT}:${DB_PORT:-5432}"
       - "${DB_PORT:-5432}:5432"
     environment:
       - POSTGRES_USER=${DB_USER:-user}
